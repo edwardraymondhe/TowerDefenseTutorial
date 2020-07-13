@@ -3,15 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-public class Turrent : MonoBehaviour
+public class Turret : MonoBehaviour
 {
     public Transform target;
-    public float range = 15f;
 
-    public string enemyTag = "Enemy";
+    [Header("Attributes")]
+
+    public float range = 15f;
+    public float fireRate = 1f;
+    private float fireCountdown = 0f;
 
     public Transform partToRotate;
     public float rotateSpeed = 10f;
+
+    [Header("Unity Setup Fields")]
+    
+    public string enemyTag = "Enemy";
+
+    public GameObject bulletPrefab;
+    public Transform firePoint;
 
     private void Start()
     {
@@ -57,6 +67,27 @@ public class Turrent : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
 
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+        // It will be reset for the first time, and won't shoot until target is valid
+        if(fireCountdown <= 0)
+        {
+            Shoot();
+            fireCountdown = 1f/fireRate;
+        }
+
+        fireCountdown -= Time.deltaTime;
+    }
+
+    void Shoot()
+    {
+        GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet bullet = bulletGO.GetComponent<Bullet>();
+        if (bullet != null)
+        {
+            bullet.Seek(target);
+        }
+
+        Debug.Log("Shoot");
     }
 
     private void OnDrawGizmosSelected() // Drawn when selected
