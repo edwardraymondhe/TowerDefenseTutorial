@@ -87,7 +87,7 @@ public class Turret : MonoBehaviour
             bullet.Seek(target);
         }
 
-        Debug.Log("Shoot");
+        // Debug.Log("Shoot");
     }
 
     private void OnDrawGizmosSelected() // Drawn when selected

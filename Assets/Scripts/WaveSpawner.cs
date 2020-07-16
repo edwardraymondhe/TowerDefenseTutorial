@@ -28,12 +28,12 @@ public class WaveSpawner : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        Debug.Log("Wave incoming...");
+        // Debug.Log("Wave incoming...");
         waveIndex++;
         for (int i = 0; i < waveIndex; i++)
         {
             SpawnEnemy();
-            Debug.Log("Spawn");
+            // Debug.Log("Spawn");
             yield return new WaitForSeconds(0.5f);
         }
 
